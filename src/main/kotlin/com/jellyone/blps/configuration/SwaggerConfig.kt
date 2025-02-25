@@ -20,6 +20,11 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme
     tags = [
         Tag(name = "Authorization and Registration", description = "API for users"),
         Tag(name = "User Management", description = "API for users"),
+        Tag(name = "Accommodations", description = "API for accommodations"),
+        Tag(name = "Bookings", description = "API for bookings"),
+        Tag(name = "Quests", description = "API for quests"),
+        Tag(name = "Guests", description = "API for guests"),
+        Tag(name = "Ratings", description = "API for ratings")
     ]
 )
 

@@ -12,17 +12,17 @@ data class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
     @Column
-    private val username: String,
+    val username: String,
     @Column
-    private val password: String,
+    val password: String,
     @Column
-    private val name: String,
+    val name: String,
     @Column
-    private val surname: String,
+    val surname: String,
     @Column
-    private val email: String,
+    val email: String,
     @Column
-    private val phone: String,
+    val phone: String,
     @Column
     val role: Role
 ) : UserDetails {

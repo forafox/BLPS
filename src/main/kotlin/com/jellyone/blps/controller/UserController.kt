@@ -40,7 +40,7 @@ class UserController(
     )
     fun me(principal: Principal): GetMeResponse {
         val user = userService.getByUsername(principal.name)
-        return GetMeResponse(principal.name, user.id, user.role)
+        return GetMeResponse(user.id, principal.name, user.role)
     }
 
     @GetMapping("/users/{id}")
@@ -57,7 +57,7 @@ class UserController(
     )
     fun getUserById(@PathVariable id: Long): GetMeResponse {
         val user = userService.getById(id)
-        return GetMeResponse(user.username, user.id, user.role)
+        return GetMeResponse(user.id, user.username, user.role)
     }
 
     @GetMapping("/users")
@@ -85,7 +85,15 @@ class UserController(
     ): Page<UserResponse> {
         val users = userService.getUsers(search, productId, teamId, page, size)
         return users.map { user ->
-            UserResponse(user.id, user.username, user.role)
+            UserResponse(
+                user.id,
+                user.username,
+                user.role,
+                user.name,
+                user.surname,
+                user.email,
+                user.phone
+            )
         }
     }
 }
