@@ -18,16 +18,28 @@ class UserService(
     private val passwordEncoder: PasswordEncoder
 ) {
 
-    fun register(username: String, fullName: String, password: String) {
+    fun register(
+        username: String,
+        fullName: String,
+        password: String,
+        name: String,
+        surname: String,
+        email: String,
+        phone: String,
+        role: Role
+    ) {
 
         checkUserAlreadyExists(username)
 
         val user = User(
             id = 0,
             username = username,
-            fullName = fullName,
             password = passwordEncoder.encode(password),
-            role = Role.USER
+            name = fullName,
+            surname = surname,
+            email = email,
+            phone = phone,
+            role = role
         )
         userRepository.save(user)
     }

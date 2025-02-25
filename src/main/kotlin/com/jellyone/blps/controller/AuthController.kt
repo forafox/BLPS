@@ -74,7 +74,16 @@ class AuthController(
         )
     )
     fun register(@Valid @RequestBody request: SignUpRequest): JwtResponse {
-        userService.register(request.username, request.fullName, request.password)
+        userService.register(
+            request.username,
+            request.fullName,
+            request.password,
+            request.name,
+            request.surname,
+            request.email,
+            request.phone,
+            request.role
+        )
         return authService.login(JwtRequest(request.username, request.password))
     }
 

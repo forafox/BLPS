@@ -8,9 +8,6 @@ data class GetMeResponse(
     @Schema(description = "The username of the user", example = "j.doe")
     val username: String,
 
-    @Schema(description = "The full name of the user", example = "John Doe")
-    val fullName: String,
-
     @Schema(description = "The ID of the user", example = "1")
     val id: Long,
 

@@ -15,8 +15,15 @@ data class User(
     private val username: String,
     @Column
     private val password: String,
-    @Column(name = "fullname")
-    val fullName: String,
+    @Column
+    private val name: String,
+    @Column
+    private val surname: String,
+    @Column
+    private val email: String,
+    @Column
+    private val phone: String,
+    @Column
     val role: Role
 ) : UserDetails {
     override fun getAuthorities(): Collection<SimpleGrantedAuthority> {
