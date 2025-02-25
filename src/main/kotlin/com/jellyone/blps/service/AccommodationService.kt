@@ -36,4 +36,29 @@ class AccommodationService(
         return accommodationRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Accommodation not found") }
     }
+
+    fun update(
+        id: Long,
+        country: Country,
+        city: String,
+        address: String,
+        price: Int,
+        description: String
+    ): Accommodation {
+        val accommodation = accommodationRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Accommodation not found") }
+        return accommodationRepository.save(
+            accommodation.copy(
+                country = country,
+                city = city,
+                address = address,
+                price = price,
+                description = description
+            )
+        )
+    }
+
+    fun delete(id: Long) {
+        accommodationRepository.deleteById(id)
+    }
 }

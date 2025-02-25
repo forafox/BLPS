@@ -18,19 +18,32 @@ class AccommodationController(
     fun createAccommodation(
         @RequestBody response: CreateAccommodationRequest,
         principal: Principal
-    ) {
-        accommodationService.create(
-            response.country,
-            response.city,
-            response.address,
-            response.price,
-            response.description,
-            principal.name
-        )
-    }
+    ) = accommodationService.create(
+        response.country,
+        response.city,
+        response.address,
+        response.price,
+        response.description,
+        principal.name
+    )
 
     @GetMapping("/{id}")
-    fun getAccommodationById(@PathVariable id: Long) {
+    fun getAccommodationById(@PathVariable id: Long) =
         accommodationService.getById(id)
-    }
+
+    @PutMapping("/{id}")
+    fun updateAccommodationById(
+        @PathVariable id: Long,
+        @RequestBody response: CreateAccommodationRequest
+    ) = accommodationService.update(
+        id,
+        response.country,
+        response.city,
+        response.address,
+        response.price,
+        response.description
+    )
+
+    @DeleteMapping("/{id}")
+    fun deleteAccommodationById(@PathVariable id: Long) = accommodationService.delete(id)
 }

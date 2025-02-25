@@ -5,7 +5,7 @@ import java.util.*
 
 @Entity
 @Table(name = "accommodation_raitings")
-data class AccommodationRaiting(
+data class AccommodationRating(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,

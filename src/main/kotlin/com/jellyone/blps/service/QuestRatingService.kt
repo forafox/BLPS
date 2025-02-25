@@ -1,4 +1,62 @@
 package com.jellyone.blps.service
 
-class QuestRatingService {
+import com.jellyone.blps.domain.QuestRating
+import com.jellyone.blps.exception.ResourceNotFoundException
+import com.jellyone.blps.repository.QuestRatingRepository
+import org.springframework.stereotype.Service
+import java.util.*
+
+@Service
+class QuestRatingService(
+    private val questRatingRepository: QuestRatingRepository,
+    private val userService: UserService,
+    private val bookingService: BookingService
+) {
+    fun create(
+        rating: Int,
+        feedback: String,
+        date: Date,
+        relevance: Boolean,
+        questId: Long,
+        bookingId: Long
+    ): QuestRating {
+        val questRating = QuestRating(
+            id = 0,
+            rating = rating,
+            feedback = feedback,
+            date = date,
+            relevance = relevance,
+            quest = userService.getById(questId),
+            booking = bookingService.getById(bookingId)
+        )
+        return questRatingRepository.save(questRating)
+    }
+
+    fun getById(id: Long): QuestRating {
+        return questRatingRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Quest rating not found") }
+    }
+
+    fun update(
+        id: Long,
+        rating: Int,
+        feedback: String,
+        date: Date,
+        relevance: Boolean
+    ): QuestRating {
+        val questRating = questRatingRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Quest rating not found") }
+        return questRatingRepository.save(
+            questRating.copy(
+                rating = rating,
+                feedback = feedback,
+                date = date,
+                relevance = relevance
+            )
+        )
+    }
+
+    fun delete(id: Long) {
+        questRatingRepository.deleteById(id)
+    }
 }
