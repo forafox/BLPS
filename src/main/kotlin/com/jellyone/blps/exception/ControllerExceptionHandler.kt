@@ -42,6 +42,17 @@ class ControllerExceptionHandler {
         return ResponseEntity(message, HttpStatus.UNPROCESSABLE_ENTITY)
     }
 
+    @ExceptionHandler(AccessDeniedException::class)
+    fun accessDeniedException(ex: AccessDeniedException, request: WebRequest): ResponseEntity<ErrorMessage> {
+        val message = ex.message?.let {
+            ErrorMessage(
+                HttpStatus.FORBIDDEN.value(), Date(), ACCESS_DENIED,
+                it
+            )
+        }
+        return ResponseEntity(message, HttpStatus.FORBIDDEN)
+    }
+
     @ExceptionHandler(
         value = [JsonParseException::class, HttpMessageNotReadableException::class, IllegalArgumentException::class,
             InvalidDataAccessApiUsageException::class, MethodArgumentTypeMismatchException::class, ConstraintViolationException::class]

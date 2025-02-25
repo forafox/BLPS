@@ -4,6 +4,7 @@ import com.jellyone.blps.domain.Booking
 import com.jellyone.blps.exception.ResourceNotFoundException
 import com.jellyone.blps.repository.BookingRepository
 import org.springframework.stereotype.Service
+import java.nio.file.AccessDeniedException
 import java.util.*
 
 @Service
@@ -43,9 +44,12 @@ class BookingService(
         departureDate: Date,
         questCount: Int,
         price: Int,
+        ownerUsername: String
     ): Booking {
+        val owner = userService.getByUsername(ownerUsername)
         val booking = bookingRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Booking not found") }
+        if (booking.quest != owner) throw AccessDeniedException("You do not have permission!")
         return bookingRepository.save(
             booking.copy(
                 arrivalDate = arrivalDate,
@@ -56,7 +60,11 @@ class BookingService(
         )
     }
 
-    fun delete(id: Long) {
+    fun delete(id: Long, ownerUsername: String) {
+        val owner = userService.getByUsername(ownerUsername)
+        val booking = bookingRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Booking not found") }
+        if (booking.quest != owner) throw AccessDeniedException("You do not have permission!")
         bookingRepository.deleteById(id)
     }
 }

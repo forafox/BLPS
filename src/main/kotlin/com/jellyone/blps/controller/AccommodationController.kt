@@ -34,16 +34,21 @@ class AccommodationController(
     @PutMapping("/{id}")
     fun updateAccommodationById(
         @PathVariable id: Long,
-        @RequestBody response: CreateAccommodationRequest
+        @RequestBody response: CreateAccommodationRequest,
+        principal: Principal
     ) = accommodationService.update(
         id,
         response.country,
         response.city,
         response.address,
         response.price,
-        response.description
+        response.description,
+        principal.name
     )
 
     @DeleteMapping("/{id}")
-    fun deleteAccommodationById(@PathVariable id: Long) = accommodationService.delete(id)
+    fun deleteAccommodationById(
+        @PathVariable id: Long,
+        principal: Principal
+    ) = accommodationService.delete(id, principal.name)
 }

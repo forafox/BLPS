@@ -4,6 +4,7 @@ import com.jellyone.blps.domain.Accommodation
 import com.jellyone.blps.domain.enums.Country
 import com.jellyone.blps.exception.ResourceNotFoundException
 import com.jellyone.blps.repository.AccommodationRepository
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 
 @Service
@@ -43,10 +44,13 @@ class AccommodationService(
         city: String,
         address: String,
         price: Int,
-        description: String
+        description: String,
+        ownerUsername: String
     ): Accommodation {
+        val owner = userService.getByUsername(ownerUsername)
         val accommodation = accommodationRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Accommodation not found") }
+        if (accommodation.owner != owner) throw AccessDeniedException("You do not have permission!")
         return accommodationRepository.save(
             accommodation.copy(
                 country = country,
@@ -58,7 +62,14 @@ class AccommodationService(
         )
     }
 
-    fun delete(id: Long) {
+    fun delete(
+        id: Long,
+        ownerUsername: String
+    ) {
+        val owner = userService.getByUsername(ownerUsername)
+        val accommodation = accommodationRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Accommodation not found") }
+        if (accommodation.owner != owner) throw AccessDeniedException("You do not have permission!")
         accommodationRepository.deleteById(id)
     }
 }
