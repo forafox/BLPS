@@ -28,7 +28,6 @@ class AccommodationRatingController(
         response.convenience,
         response.feedback,
         response.date,
-        response.relevance,
         response.accommodationId,
         response.bookingId
     )
@@ -36,6 +35,10 @@ class AccommodationRatingController(
     @GetMapping("/{id}")
     fun getAccommodationRatingById(@PathVariable id: Long) =
         accommodationRatingService.getById(id)
+
+    @GetMapping("/accommodation/{accommodationId}")
+    fun getAllAccommodationRatingsByAccommodationId(@PathVariable accommodationId: Long) =
+        accommodationRatingService.getAllByAccommodationId(accommodationId)
 
     @PutMapping("/{id}")
     fun updateAccommodationRatingById(
@@ -53,7 +56,6 @@ class AccommodationRatingController(
         response.convenience,
         response.feedback,
         response.date,
-        response.relevance
     )
 
     @DeleteMapping("/{id}")

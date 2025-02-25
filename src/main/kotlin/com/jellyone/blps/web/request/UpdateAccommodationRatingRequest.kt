@@ -13,5 +13,4 @@ class UpdateAccommodationRatingRequest(
     val convenience: Int,
     val feedback: String,
     val date: Date,
-    val relevance: Boolean
 )

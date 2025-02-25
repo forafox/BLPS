@@ -9,16 +9,16 @@ data class Booking(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-    @Column
+    @Column(name = "arrival_day")
     val arrivalDate: Date,
-    @Column
+    @Column(name = "departure_day")
     val departureDate: Date,
-    @Column
+    @Column(name = "guest_count")
     val questCount: Int,
     @Column
     val price: Int,
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "quest_id")
     val quest: User,
     @ManyToOne
     @JoinColumn(name = "accommodation_id")

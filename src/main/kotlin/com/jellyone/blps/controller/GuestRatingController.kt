@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/quests")
-@Tag(name = "Quests Ratings API")
+@Tag(name = "Guests Ratings API")
 @SecurityRequirement(name = "JWT")
-class QuestRatingController(
+class GuestRatingController(
     private val questRatingService: QuestRatingService
 ) {
     @PostMapping("/ratings")
@@ -21,7 +21,6 @@ class QuestRatingController(
         response.rating,
         response.feedback,
         response.date,
-        response.relevance,
         response.questId,
         response.bookingId
     )
@@ -29,6 +28,10 @@ class QuestRatingController(
     @GetMapping("/ratings/{id}")
     fun getQuestRatingById(@PathVariable id: Long) =
         questRatingService.getById(id)
+
+    @GetMapping("/quest/{questId}")
+    fun getAllQuestRatingsByQuestId(@PathVariable questId: Long) =
+        questRatingService.getAllByQuestId(questId)
 
     @PutMapping("/ratings/{id}")
     fun updateQuestRatingById(
@@ -39,7 +42,6 @@ class QuestRatingController(
         response.rating,
         response.feedback,
         response.date,
-        response.relevance
     )
 
     @DeleteMapping("/ratings/{id}")

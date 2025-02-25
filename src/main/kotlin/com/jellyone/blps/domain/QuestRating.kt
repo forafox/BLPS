@@ -4,8 +4,8 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-@Table(name = "quest_ratings")
-data class QuestRating (
+@Table(name = "guest_ratings")
+data class QuestRating(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
@@ -13,10 +13,10 @@ data class QuestRating (
     val rating: Int,
     @Column
     val feedback: String,
-    @Column
+    @Column(name = "day")
     val date: Date,
     @Column
-    val relevance: Boolean,
+    var relevance: Boolean,
     @ManyToOne
     @JoinColumn(name = "quest_id")
     val quest: User,

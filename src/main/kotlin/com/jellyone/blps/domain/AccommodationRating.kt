@@ -14,7 +14,7 @@ data class AccommodationRating(
     @Column
     val putiry: Int,
     @Column
-    val accurancy: Int,
+    val accuracy: Int,
     @Column
     val arrival: Int,
     @Column
@@ -24,13 +24,13 @@ data class AccommodationRating(
     @Column
     val priceQuality: Int,
     @Column
-    val convenience: Int,
+    val conveniences: Int,
     @Column
     val feedback: String,
-    @Column
+    @Column(name = "day")
     val date: Date,
     @Column
-    val relevance: Boolean,
+    var relevance: Boolean,
     @ManyToOne
     @JoinColumn(name = "accommodation_id")
     val accommodation: Accommodation,

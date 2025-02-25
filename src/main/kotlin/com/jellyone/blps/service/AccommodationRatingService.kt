@@ -3,6 +3,7 @@ package com.jellyone.blps.service
 import com.jellyone.blps.domain.AccommodationRating
 import com.jellyone.blps.exception.ResourceNotFoundException
 import com.jellyone.blps.repository.AccommodationRatingRepository
+import com.jellyone.blps.repository.RatingRepository
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -10,7 +11,8 @@ import java.util.*
 class AccommodationRatingService(
     private val accommodationRatingRepository: AccommodationRatingRepository,
     private val accommodationService: AccommodationService,
-    private val bookingService: BookingService
+    private val bookingService: BookingService,
+    private val ratingRepository: RatingRepository
 ) {
     fun create(
         overallImpression: Int,
@@ -23,7 +25,6 @@ class AccommodationRatingService(
         convenience: Int,
         feedback: String,
         date: Date,
-        relevance: Boolean,
         accommodationId: Long,
         bookingId: Long
     ): AccommodationRating {
@@ -31,15 +32,15 @@ class AccommodationRatingService(
             id = 0,
             overallImpression = overallImpression,
             putiry = putiry,
-            accurancy = accuracy,
+            accuracy = accuracy,
             arrival = arrival,
             communication = communication,
             location = location,
             priceQuality = priceQuality,
-            convenience = convenience,
+            conveniences = convenience,
             feedback = feedback,
             date = date,
-            relevance = relevance,
+            relevance = ratingRepository.hasMultipleRatingsForBooking(bookingId, false),
             accommodation = accommodationService.getById(accommodationId),
             booking = bookingService.getById(bookingId)
         )
@@ -49,6 +50,10 @@ class AccommodationRatingService(
     fun getById(id: Long): AccommodationRating {
         return accommodationRatingRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Accommodation rating not found") }
+    }
+
+    fun getAllByAccommodationId(accommodationId: Long): List<AccommodationRating> {
+        return accommodationRatingRepository.findAllByAccommodationIdAndRelevanceIsTrue(accommodationId)
     }
 
     fun update(
@@ -63,7 +68,6 @@ class AccommodationRatingService(
         convenience: Int,
         feedback: String,
         date: Date,
-        relevance: Boolean
     ): AccommodationRating {
         val accommodationRating = accommodationRatingRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Accommodation rating not found") }
@@ -71,15 +75,15 @@ class AccommodationRatingService(
             accommodationRating.copy(
                 overallImpression = overallImpression,
                 putiry = putiry,
-                accurancy = accurancy,
+                accuracy = accurancy,
                 arrival = arrival,
                 communication = communication,
                 location = location,
                 priceQuality = priceQuality,
-                convenience = convenience,
+                conveniences = convenience,
                 feedback = feedback,
                 date = date,
-                relevance = relevance
+                relevance = false
             )
         )
     }

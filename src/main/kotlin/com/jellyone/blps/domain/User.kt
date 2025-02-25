@@ -12,9 +12,9 @@ data class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
     @Column
-    val username: String,
+    private val username: String,
     @Column
-    val password: String,
+    private val password: String,
     @Column
     val name: String,
     @Column

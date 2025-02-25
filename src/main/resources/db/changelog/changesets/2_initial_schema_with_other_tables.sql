@@ -50,7 +50,7 @@ CREATE TABLE accommodation_raitings
     feedback           TEXT    NOT NULL,
     day                DATE    NOT NULL,
     relevance          BOOL    NOT NULL,
-    acaccommodation_id INTEGER REFERENCES accommodations (id) ON DELETE CASCADE,
+    accommodation_id   INTEGER REFERENCES accommodations (id) ON DELETE CASCADE,
     booking_id         INTEGER REFERENCES bookings (id) ON DELETE CASCADE
 );
 

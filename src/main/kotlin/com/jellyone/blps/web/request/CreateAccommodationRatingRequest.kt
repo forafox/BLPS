@@ -13,7 +13,6 @@ data class CreateAccommodationRatingRequest(
     val convenience: Int,
     val feedback: String,
     val date: Date,
-    val relevance: Boolean,
     val accommodationId: Long,
     val bookingId: Long
 )
