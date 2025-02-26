@@ -4,6 +4,7 @@ import com.jellyone.blps.domain.QuestRating
 import com.jellyone.blps.exception.ResourceNotFoundException
 import com.jellyone.blps.repository.QuestRatingRepository
 import com.jellyone.blps.repository.RatingRepository
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -19,8 +20,10 @@ class QuestRatingService(
         feedback: String,
         date: Date,
         questId: Long,
-        bookingId: Long
+        bookingId: Long,
+        username: String
     ): QuestRating {
+        checkAbilityToRateAccommodation(questId, username)
         val questRating = QuestRating(
             id = 0,
             rating = rating,
@@ -62,5 +65,13 @@ class QuestRatingService(
 
     fun delete(id: Long) {
         questRatingRepository.deleteById(id)
+    }
+
+    fun checkAbilityToRateAccommodation(guestId: Long, username: String) {
+        val guest = userService.getById(guestId)
+        val evaluator = userService.getByUsername(username)
+        if (guest.username == evaluator.username) {
+            throw AccessDeniedException("You can't rate")
+        }
     }
 }

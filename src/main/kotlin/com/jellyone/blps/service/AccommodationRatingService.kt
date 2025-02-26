@@ -4,6 +4,7 @@ import com.jellyone.blps.domain.AccommodationRating
 import com.jellyone.blps.exception.ResourceNotFoundException
 import com.jellyone.blps.repository.AccommodationRatingRepository
 import com.jellyone.blps.repository.RatingRepository
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -12,7 +13,8 @@ class AccommodationRatingService(
     private val accommodationRatingRepository: AccommodationRatingRepository,
     private val accommodationService: AccommodationService,
     private val bookingService: BookingService,
-    private val ratingRepository: RatingRepository
+    private val ratingRepository: RatingRepository,
+    private val userService: UserService
 ) {
     fun create(
         overallImpression: Int,
@@ -26,8 +28,10 @@ class AccommodationRatingService(
         feedback: String,
         date: Date,
         accommodationId: Long,
-        bookingId: Long
+        bookingId: Long,
+        username: String
     ): AccommodationRating {
+        checkAbilityToRateAccommodation(accommodationId, username, bookingId)
         val accommodationRating = AccommodationRating(
             id = 0,
             overallImpression = overallImpression,
@@ -90,5 +94,35 @@ class AccommodationRatingService(
 
     fun delete(id: Long) {
         accommodationRatingRepository.deleteById(id)
+    }
+
+    private fun checkAbilityToRateAccommodation(accommodationId: Long, username: String, bookingId: Long) {
+        checkAccess(accommodationId, username)
+        checkRules(bookingId)
+    }
+
+    private fun checkAccess(accommodationId: Long, username: String) {
+        val accommodation = accommodationService.getById(accommodationId)
+        val evaluator = userService.getByUsername(username)
+        if (accommodation.owner.username == evaluator.username) {
+            throw AccessDeniedException("You can't rate this accommodation")
+        }
+    }
+
+    private fun checkRules(bookingId: Long) {
+        val booking = bookingService.getById(bookingId)
+        if (booking.departureDate.after(Date())) {
+            throw IllegalStateException("There was no eviction from the house")
+        }
+        if (!isWithinLast14Days(booking.departureDate)) {
+            throw IllegalStateException("The house was rented for more than 14 days")
+        }
+    }
+
+    private fun isWithinLast14Days(date: Date): Boolean {
+        val currentTime = System.currentTimeMillis()
+        val fourteenDaysMillis = 14L * 24 * 60 * 60 * 1000 // 14 дней в миллисекундах
+
+        return date.time >= (currentTime - fourteenDaysMillis)
     }
 }

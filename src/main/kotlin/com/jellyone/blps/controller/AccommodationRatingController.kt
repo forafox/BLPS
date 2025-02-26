@@ -7,6 +7,7 @@ import com.jellyone.blps.web.response.toResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api/accommodation-ratings")
@@ -17,7 +18,8 @@ class AccommodationRatingController(
 ) {
     @PostMapping("")
     fun createAccommodationRating(
-        @RequestBody response: CreateAccommodationRatingRequest
+        @RequestBody response: CreateAccommodationRatingRequest,
+        principal: Principal
     ) = accommodationRatingService.create(
         response.overallImpression,
         response.putiry,
@@ -30,7 +32,8 @@ class AccommodationRatingController(
         response.feedback,
         response.date,
         response.accommodationId,
-        response.bookingId
+        response.bookingId,
+        principal.name
     ).toResponse()
 
     @GetMapping("/{id}")
