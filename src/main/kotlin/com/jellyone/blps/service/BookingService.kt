@@ -70,10 +70,9 @@ class BookingService(
     }
 
     private fun checkAbilityToBooking(accommodationId: Long, username: String) {
-        val booking = bookingRepository.findById(accommodationId)
-            .orElseThrow { ResourceNotFoundException("Booking not found") }
+        val accommodation = accommodationService.getById(accommodationId)
         val user = userService.getByUsername(username)
-        if (booking.quest.username == user.username) {
+        if (accommodation.owner.username == user.username) {
             throw AccessDeniedException("You do not have permission!")
         }
     }
