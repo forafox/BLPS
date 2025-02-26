@@ -2,6 +2,7 @@ package com.jellyone.blps.controller
 
 import com.jellyone.blps.service.AccommodationService
 import com.jellyone.blps.web.request.CreateAccommodationRequest
+import com.jellyone.blps.web.response.toResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
@@ -25,11 +26,11 @@ class AccommodationController(
         response.price,
         response.description,
         principal.name
-    )
+    ).toResponse()
 
     @GetMapping("/{id}")
     fun getAccommodationById(@PathVariable id: Long) =
-        accommodationService.getById(id)
+        accommodationService.getById(id).toResponse()
 
     @PutMapping("/{id}")
     fun updateAccommodationById(
@@ -44,7 +45,7 @@ class AccommodationController(
         response.price,
         response.description,
         principal.name
-    )
+    ).toResponse()
 
     @DeleteMapping("/{id}")
     fun deleteAccommodationById(

@@ -3,6 +3,7 @@ package com.jellyone.blps.controller
 import com.jellyone.blps.service.AccommodationRatingService
 import com.jellyone.blps.web.request.CreateAccommodationRatingRequest
 import com.jellyone.blps.web.request.UpdateAccommodationRatingRequest
+import com.jellyone.blps.web.response.toResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
@@ -30,15 +31,15 @@ class AccommodationRatingController(
         response.date,
         response.accommodationId,
         response.bookingId
-    )
+    ).toResponse()
 
     @GetMapping("/{id}")
     fun getAccommodationRatingById(@PathVariable id: Long) =
-        accommodationRatingService.getById(id)
+        accommodationRatingService.getById(id).toResponse()
 
     @GetMapping("/accommodation/{accommodationId}")
     fun getAllAccommodationRatingsByAccommodationId(@PathVariable accommodationId: Long) =
-        accommodationRatingService.getAllByAccommodationId(accommodationId)
+        accommodationRatingService.getAllByAccommodationId(accommodationId).map { it.toResponse() }
 
     @PutMapping("/{id}")
     fun updateAccommodationRatingById(
@@ -56,7 +57,7 @@ class AccommodationRatingController(
         response.convenience,
         response.feedback,
         response.date,
-    )
+    ).toResponse()
 
     @DeleteMapping("/{id}")
     fun deleteAccommodationRatingById(@PathVariable id: Long) = accommodationRatingService.delete(id)

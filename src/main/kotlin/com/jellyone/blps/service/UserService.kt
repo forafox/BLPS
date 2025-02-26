@@ -20,7 +20,6 @@ class UserService(
 
     fun register(
         username: String,
-        fullName: String,
         password: String,
         name: String,
         surname: String,
@@ -35,7 +34,7 @@ class UserService(
             id = 0,
             username = username,
             password = passwordEncoder.encode(password),
-            name = fullName,
+            name = name,
             surname = surname,
             email = email,
             phone = phone,
