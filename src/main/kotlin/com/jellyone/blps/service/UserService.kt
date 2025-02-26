@@ -55,7 +55,7 @@ class UserService(
 
     fun getUsers(search: String, productId: Long?, teamId: Long?, page: Int, size: Int): Page<User> {
         val pageable: Pageable = PageRequest.of(page, size)
-        return userRepository.findAllUsersWithSomeParameters(search, productId, teamId, pageable)
+        return userRepository.findAllUsersWithSomeParameters(search, pageable)
     }
 
     private fun checkUserAlreadyExists(username: String) {
