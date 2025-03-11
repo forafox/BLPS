@@ -38,6 +38,9 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
 
+    implementation("org.postgresql:postgresql:42.7.5")
+    implementation("com.atomikos:transactions-spring-boot3-starter:6.0.0")
+
     implementation("org.projectlombok:lombok:1.18.28")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

@@ -33,6 +33,7 @@ class AccommodationRatingController(
         response.date,
         response.accommodationId,
         response.bookingId,
+        response.privateText,
         principal.name
     ).toResponse()
 

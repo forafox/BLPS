@@ -14,5 +14,6 @@ data class CreateAccommodationRatingRequest(
     val feedback: String,
     val date: Date,
     val accommodationId: Long,
-    val bookingId: Long
+    val bookingId: Long,
+    val privateText: String
 )

@@ -1,21 +1,27 @@
 package com.jellyone.blps.service
 
+import com.jellyone.blps.domain.AccommodationPrivateRating
 import com.jellyone.blps.domain.AccommodationRating
 import com.jellyone.blps.exception.ResourceNotFoundException
+import com.jellyone.blps.repository.AccommodationPrivateRatingRepository
 import com.jellyone.blps.repository.AccommodationRatingRepository
 import com.jellyone.blps.repository.RatingRepository
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
 class AccommodationRatingService(
     private val accommodationRatingRepository: AccommodationRatingRepository,
+    private val accommodationPrivateRatingRepository: AccommodationPrivateRatingRepository,
     private val accommodationService: AccommodationService,
     private val bookingService: BookingService,
     private val ratingRepository: RatingRepository,
     private val userService: UserService
 ) {
+
+    @Transactional
     fun create(
         overallImpression: Int,
         putiry: Int,
@@ -29,6 +35,7 @@ class AccommodationRatingService(
         date: Date,
         accommodationId: Long,
         bookingId: Long,
+        privateText: String,
         username: String
     ): AccommodationRating {
         checkAbilityToRateAccommodation(accommodationId, username, bookingId)
@@ -48,7 +55,12 @@ class AccommodationRatingService(
             accommodation = accommodationService.getById(accommodationId),
             booking = bookingService.getById(bookingId)
         )
-        return accommodationRatingRepository.save(accommodationRating)
+         accommodationRatingRepository.save(accommodationRating)
+//        if (true) {
+//            throw RuntimeException("Ошибка! Транзакция должна быть откатана.");
+//        }
+         accommodationPrivateRatingRepository.save(AccommodationPrivateRating(0, privateText))
+        return accommodationRating
     }
 
     fun getById(id: Long): AccommodationRating {

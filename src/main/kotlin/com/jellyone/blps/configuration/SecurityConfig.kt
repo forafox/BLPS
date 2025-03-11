@@ -82,4 +82,11 @@ class SecurityConfig(
         expressionHandler.setApplicationContext(applicationContext)
         return expressionHandler
     }
+
+//    @Bean
+//    fun jaasAuthenticationProvider(): JaasAuthenticationProvider {
+//        val provider = JaasAuthenticationProvider()
+//        provider.setLoginContextName("MyLoginModule")
+//        return provider
+//    }
 }
