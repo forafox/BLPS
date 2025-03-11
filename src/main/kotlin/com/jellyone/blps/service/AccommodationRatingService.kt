@@ -18,7 +18,7 @@ class AccommodationRatingService(
 ) {
     fun create(
         overallImpression: Int,
-        putiry: Int,
+        purity: Int,
         accuracy: Int,
         arrival: Int,
         communication: Int,
@@ -35,7 +35,7 @@ class AccommodationRatingService(
         val accommodationRating = AccommodationRating(
             id = 0,
             overallImpression = overallImpression,
-            putiry = putiry,
+            purity = purity,
             accuracy = accuracy,
             arrival = arrival,
             communication = communication,
@@ -63,8 +63,8 @@ class AccommodationRatingService(
     fun update(
         id: Long,
         overallImpression: Int,
-        putiry: Int,
-        accurancy: Int,
+        purity: Int,
+        accuracy: Int,
         arrival: Int,
         communication: Int,
         location: Int,
@@ -78,8 +78,8 @@ class AccommodationRatingService(
         return accommodationRatingRepository.save(
             accommodationRating.copy(
                 overallImpression = overallImpression,
-                putiry = putiry,
-                accuracy = accurancy,
+                purity = purity,
+                accuracy = accuracy,
                 arrival = arrival,
                 communication = communication,
                 location = location,

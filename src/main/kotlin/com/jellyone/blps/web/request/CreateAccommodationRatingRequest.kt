@@ -4,7 +4,7 @@ import java.util.Date
 
 data class CreateAccommodationRatingRequest(
     val overallImpression: Int,
-    val putiry: Int,
+    val purity: Int,
     val accuracy: Int,
     val arrival: Int,
     val communication: Int,

@@ -5,7 +5,7 @@ import java.util.*
 
 @Entity
 @Table(name = "guest_ratings")
-data class QuestRating(
+data class GuestRating(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
@@ -18,8 +18,8 @@ data class QuestRating(
     @Column
     var relevance: Boolean,
     @ManyToOne
-    @JoinColumn(name = "quest_id")
-    val quest: User,
+    @JoinColumn(name = "guest_id")
+    val guest: User,
     @ManyToOne
     @JoinColumn(name = "booking_id")
     val booking: Booking,

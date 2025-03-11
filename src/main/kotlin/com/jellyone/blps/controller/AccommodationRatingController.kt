@@ -22,7 +22,7 @@ class AccommodationRatingController(
         principal: Principal
     ) = accommodationRatingService.create(
         response.overallImpression,
-        response.putiry,
+        response.purity,
         response.accuracy,
         response.arrival,
         response.communication,
@@ -51,7 +51,7 @@ class AccommodationRatingController(
     ) = accommodationRatingService.update(
         id,
         response.overallImpression,
-        response.putiry,
+        response.purity,
         response.accuracy,
         response.arrival,
         response.communication,

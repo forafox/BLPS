@@ -16,7 +16,7 @@ fun AccommodationRating.toResponse() = AccommodationRatingResponse(
     id = id,
     rating = calculateRating(
         overallImpression,
-        putiry,
+        purity,
         accuracy,
         arrival,
         communication,
@@ -32,12 +32,12 @@ fun AccommodationRating.toResponse() = AccommodationRatingResponse(
 
 private fun calculateRating(
     overallImpression: Int,
-    putiry: Int,
+    purity: Int,
     accuracy: Int,
     arrival: Int,
     communication: Int,
     location: Int,
     priceQuality: Int
 ): Int {
-    return (overallImpression + putiry + accuracy + arrival + communication + location + priceQuality) / 7
+    return (overallImpression + purity + accuracy + arrival + communication + location + priceQuality) / 7
 }

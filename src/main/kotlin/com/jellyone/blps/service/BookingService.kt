@@ -16,7 +16,7 @@ class BookingService(
     fun create(
         arrivalDate: Date,
         departureDate: Date,
-        questCount: Int,
+        guestCount: Int,
         price: Int,
         accommodationId: Long,
         username: String
@@ -26,10 +26,10 @@ class BookingService(
             id = 0,
             arrivalDate = arrivalDate,
             departureDate = departureDate,
-            questCount = questCount,
+            guestCount = guestCount,
             price = price,
             accommodation = accommodationService.getById(accommodationId),
-            quest = userService.getByUsername(username)
+            guest = userService.getByUsername(username)
         )
         return bookingRepository.save(booking)
     }
@@ -43,19 +43,19 @@ class BookingService(
         id: Long,
         arrivalDate: Date,
         departureDate: Date,
-        questCount: Int,
+        guestCount: Int,
         price: Int,
         ownerUsername: String
     ): Booking {
         val owner = userService.getByUsername(ownerUsername)
         val booking = bookingRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Booking not found") }
-        if (booking.quest != owner) throw AccessDeniedException("You do not have permission!")
+        if (booking.guest != owner) throw AccessDeniedException("You do not have permission!")
         return bookingRepository.save(
             booking.copy(
                 arrivalDate = arrivalDate,
                 departureDate = departureDate,
-                questCount = questCount,
+                guestCount = guestCount,
                 price = price,
             )
         )
@@ -65,7 +65,7 @@ class BookingService(
         val owner = userService.getByUsername(ownerUsername)
         val booking = bookingRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Booking not found") }
-        if (booking.quest != owner) throw AccessDeniedException("You do not have permission!")
+        if (booking.guest != owner) throw AccessDeniedException("You do not have permission!")
         bookingRepository.deleteById(id)
     }
 

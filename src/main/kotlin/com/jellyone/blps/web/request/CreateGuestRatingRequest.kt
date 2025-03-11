@@ -2,15 +2,15 @@ package com.jellyone.blps.web.request
 
 import java.util.*
 
-data class CreateQuestRatingRequest(
+data class CreateGuestRatingRequest(
     val rating: Int,
     val feedback: String,
     val date: Date,
-    val questId: Long,
+    val guestId: Long,
     val bookingId: Long
 )
 
-data class UpdateQuestRatingRequest(
+data class UpdateGuestRatingRequest(
     val rating: Int,
     val feedback: String,
     val date: Date,

@@ -23,7 +23,7 @@ class BookingController(
     ) = bookingService.create(
         response.arrivalDate,
         response.departureDate,
-        response.questCount,
+        response.guestCount,
         response.price,
         response.accommodationId,
         principal.name
@@ -42,7 +42,7 @@ class BookingController(
         id,
         response.arrivalDate,
         response.departureDate,
-        response.questCount,
+        response.guestCount,
         response.price,
         principal.name
     ).toResponse()
