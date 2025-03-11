@@ -1,16 +1,16 @@
 package com.jellyone.blps.service
 
-import com.jellyone.blps.domain.QuestRating
+import com.jellyone.blps.domain.GuestRating
 import com.jellyone.blps.exception.ResourceNotFoundException
-import com.jellyone.blps.repository.QuestRatingRepository
+import com.jellyone.blps.repository.GuestRatingRepository
 import com.jellyone.blps.repository.RatingRepository
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class QuestRatingService(
-    private val questRatingRepository: QuestRatingRepository,
+class GuestRatingService(
+    private val guestRatingRepository: GuestRatingRepository,
     private val userService: UserService,
     private val bookingService: BookingService,
     private val ratingRepository: RatingRepository
@@ -19,30 +19,30 @@ class QuestRatingService(
         rating: Int,
         feedback: String,
         date: Date,
-        questId: Long,
+        guestId: Long,
         bookingId: Long,
         username: String
-    ): QuestRating {
-        checkAbilityToRateAccommodation(questId, username)
-        val questRating = QuestRating(
+    ): GuestRating {
+        checkAbilityToRateAccommodation(guestId, username)
+        val guestRating = GuestRating(
             id = 0,
             rating = rating,
             feedback = feedback,
             date = date,
-            quest = userService.getById(questId),
+            guest = userService.getById(guestId),
             relevance = ratingRepository.hasMultipleRatingsForBooking(bookingId, true),
             booking = bookingService.getById(bookingId)
         )
-        return questRatingRepository.save(questRating)
+        return guestRatingRepository.save(guestRating)
     }
 
-    fun getById(id: Long): QuestRating {
-        return questRatingRepository.findById(id)
-            .orElseThrow { ResourceNotFoundException("Quest rating not found") }
+    fun getById(id: Long): GuestRating {
+        return guestRatingRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Guest rating not found") }
     }
 
-    fun getAllByQuestId(questId: Long): List<QuestRating> {
-        return questRatingRepository.findAllByQuestIdAndRelevanceIsTrue(questId)
+    fun getAllByGuestId(guestId: Long): List<GuestRating> {
+        return guestRatingRepository.findAllByGuestIdAndRelevanceIsTrue(guestId)
     }
 
     fun update(
@@ -50,11 +50,11 @@ class QuestRatingService(
         rating: Int,
         feedback: String,
         date: Date,
-    ): QuestRating {
-        val questRating = questRatingRepository.findById(id)
-            .orElseThrow { ResourceNotFoundException("Quest rating not found") }
-        return questRatingRepository.save(
-            questRating.copy(
+    ): GuestRating {
+        val guestRating = guestRatingRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Guest rating not found") }
+        return guestRatingRepository.save(
+            guestRating.copy(
                 rating = rating,
                 feedback = feedback,
                 date = date,
@@ -64,7 +64,7 @@ class QuestRatingService(
     }
 
     fun delete(id: Long) {
-        questRatingRepository.deleteById(id)
+        guestRatingRepository.deleteById(id)
     }
 
     fun checkAbilityToRateAccommodation(guestId: Long, username: String) {

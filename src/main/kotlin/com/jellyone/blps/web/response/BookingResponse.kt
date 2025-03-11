@@ -8,7 +8,7 @@ class BookingResponse(
     val departureDay: String,
     val guestCount: Int,
     val price: Int,
-    val quest: UserResponse,
+    val guest: UserResponse,
     val accommodation: AccommodationResponse
 )
 
@@ -16,8 +16,8 @@ fun Booking.toResponse() = BookingResponse(
     id = id,
     arrivalDay = arrivalDate.toString(),
     departureDay = departureDate.toString(),
-    guestCount = questCount,
+    guestCount = guestCount,
     price = price,
-    quest = quest.toResponse(),
+    guest = guest.toResponse(),
     accommodation = accommodation.toResponse()
 )

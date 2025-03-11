@@ -18,13 +18,14 @@ class AccommodationRatingService(
     private val accommodationService: AccommodationService,
     private val bookingService: BookingService,
     private val ratingRepository: RatingRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val privateFeedbackService: PrivateFeedbackService
 ) {
 
     @Transactional
     fun create(
         overallImpression: Int,
-        putiry: Int,
+        purity: Int,
         accuracy: Int,
         arrival: Int,
         communication: Int,
@@ -32,6 +33,7 @@ class AccommodationRatingService(
         priceQuality: Int,
         convenience: Int,
         feedback: String,
+        privateFeedback: String,
         date: Date,
         accommodationId: Long,
         bookingId: Long,
@@ -39,10 +41,12 @@ class AccommodationRatingService(
         username: String
     ): AccommodationRating {
         checkAbilityToRateAccommodation(accommodationId, username, bookingId)
+        //TODO транзакция
+        privateFeedbackService.create(feedback, date, bookingId, username)
         val accommodationRating = AccommodationRating(
             id = 0,
             overallImpression = overallImpression,
-            putiry = putiry,
+            purity = purity,
             accuracy = accuracy,
             arrival = arrival,
             communication = communication,
@@ -55,11 +59,10 @@ class AccommodationRatingService(
             accommodation = accommodationService.getById(accommodationId),
             booking = bookingService.getById(bookingId)
         )
-         accommodationRatingRepository.save(accommodationRating)
 //        if (true) {
 //            throw RuntimeException("Ошибка! Транзакция должна быть откатана.");
 //        }
-         accommodationPrivateRatingRepository.save(AccommodationPrivateRating(0, privateText))
+        accommodationRatingRepository.save(accommodationRating)
         return accommodationRating
     }
 
@@ -75,8 +78,8 @@ class AccommodationRatingService(
     fun update(
         id: Long,
         overallImpression: Int,
-        putiry: Int,
-        accurancy: Int,
+        purity: Int,
+        accuracy: Int,
         arrival: Int,
         communication: Int,
         location: Int,
@@ -90,8 +93,8 @@ class AccommodationRatingService(
         return accommodationRatingRepository.save(
             accommodationRating.copy(
                 overallImpression = overallImpression,
-                putiry = putiry,
-                accuracy = accurancy,
+                purity = purity,
+                accuracy = accuracy,
                 arrival = arrival,
                 communication = communication,
                 location = location,

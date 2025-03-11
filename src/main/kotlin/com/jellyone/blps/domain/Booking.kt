@@ -14,12 +14,12 @@ data class Booking(
     @Column(name = "departure_day")
     val departureDate: Date,
     @Column(name = "guest_count")
-    val questCount: Int,
+    val guestCount: Int,
     @Column
     val price: Int,
     @ManyToOne
-    @JoinColumn(name = "quest_id")
-    val quest: User,
+    @JoinColumn(name = "guest_id")
+    val guest: User,
     @ManyToOne
     @JoinColumn(name = "accommodation_id")
     val accommodation: Accommodation,

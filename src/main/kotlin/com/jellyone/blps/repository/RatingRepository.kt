@@ -5,23 +5,23 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 class RatingRepository(
-    private val questRatingRepository: QuestRatingRepository,
+    private val guestRatingRepository: GuestRatingRepository,
     private val accommodationRatingRepository: AccommodationRatingRepository
 ) {
     @Transactional
-    fun hasMultipleRatingsForBooking(bookingId: Long, isQuest: Boolean): Boolean {
-        val questRatingCount = questRatingRepository.countByBookingId(bookingId)
+    fun hasMultipleRatingsForBooking(bookingId: Long, isGuest: Boolean): Boolean {
+        val guestRatingCount = guestRatingRepository.countByBookingId(bookingId)
         val accommodationRatingCount = accommodationRatingRepository.countByBookingId(bookingId)
-        val multipleRatings = (questRatingCount > 0 && !isQuest) || (accommodationRatingCount > 0 && isQuest)
+        val multipleRatings = (guestRatingCount > 0 && !isGuest) || (accommodationRatingCount > 0 && isGuest)
 
         if (multipleRatings) {
-            val questRatings = questRatingRepository.findByBookingId(bookingId)
+            val guestRatings = guestRatingRepository.findByBookingId(bookingId)
             val accommodationRatings = accommodationRatingRepository.findByBookingId(bookingId)
 
-            questRatings.forEach { it.relevance = true }
+            guestRatings.forEach { it.relevance = true }
             accommodationRatings.forEach { it.relevance = true }
 
-            questRatingRepository.saveAll(questRatings)
+            guestRatingRepository.saveAll(guestRatings)
             accommodationRatingRepository.saveAll(accommodationRatings)
         }
 

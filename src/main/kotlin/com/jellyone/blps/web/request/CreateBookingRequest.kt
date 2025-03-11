@@ -5,7 +5,7 @@ import java.util.*
 data class CreateBookingRequest(
     val arrivalDate: Date,
     val departureDate: Date,
-    val questCount: Int,
+    val guestCount: Int,
     val price: Int,
     val accommodationId: Long,
 )
@@ -13,6 +13,6 @@ data class CreateBookingRequest(
 data class UpdateBookingRequest(
     val arrivalDate: Date,
     val departureDate: Date,
-    val questCount: Int,
+    val guestCount: Int,
     val price: Int,
 )

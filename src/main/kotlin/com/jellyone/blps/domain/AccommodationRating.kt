@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-@Table(name = "accommodation_raitings")
+@Table(name = "accommodation_ratings")
 data class AccommodationRating(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,7 +12,7 @@ data class AccommodationRating(
     @Column
     val overallImpression: Int,
     @Column
-    val putiry: Int,
+    val purity: Int,
     @Column
     val accuracy: Int,
     @Column
