@@ -1,6 +1,7 @@
 package com.jellyone.blps.service
 
 import com.jellyone.blps.domain.Booking
+import com.jellyone.blps.domain.User
 import com.jellyone.blps.exception.ResourceNotFoundException
 import com.jellyone.blps.repository.BookingRepository
 import org.springframework.stereotype.Service
@@ -37,6 +38,12 @@ class BookingService(
     fun getById(id: Long): Booking {
         return bookingRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Booking not found") }
+    }
+
+    fun getOwnerByBookingId(id: Long): User {
+        val booking = getById(id)
+        val accommodation = booking.accommodation
+        return accommodation.owner
     }
 
     fun update(

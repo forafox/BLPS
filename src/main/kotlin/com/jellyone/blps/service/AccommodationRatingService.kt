@@ -14,7 +14,8 @@ class AccommodationRatingService(
     private val accommodationService: AccommodationService,
     private val bookingService: BookingService,
     private val ratingRepository: RatingRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val privateFeedbackService: PrivateFeedbackService
 ) {
     fun create(
         overallImpression: Int,
@@ -26,11 +27,14 @@ class AccommodationRatingService(
         priceQuality: Int,
         convenience: Int,
         feedback: String,
+        privateFeedback: String,
         date: Date,
         accommodationId: Long,
         bookingId: Long,
         username: String
     ): AccommodationRating {
+        //TODO транзакция
+        privateFeedbackService.create(feedback, date, bookingId, username)
         checkAbilityToRateAccommodation(accommodationId, username, bookingId)
         val accommodationRating = AccommodationRating(
             id = 0,

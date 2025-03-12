@@ -30,6 +30,7 @@ class AccommodationRatingController(
         response.priceQuality,
         response.convenience,
         response.feedback,
+        response.privateFeedback,
         response.date,
         response.accommodationId,
         response.bookingId,
