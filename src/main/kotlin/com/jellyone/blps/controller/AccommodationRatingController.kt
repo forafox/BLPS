@@ -6,6 +6,7 @@ import com.jellyone.blps.web.request.UpdateAccommodationRatingRequest
 import com.jellyone.blps.web.response.toResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -46,6 +47,7 @@ class AccommodationRatingController(
     fun getAllAccommodationRatingsByAccommodationId(@PathVariable accommodationId: Long) =
         accommodationRatingService.getAllByAccommodationId(accommodationId).map { it.toResponse() }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updateAccommodationRatingById(
         @PathVariable id: Long,
@@ -64,6 +66,7 @@ class AccommodationRatingController(
         response.date,
     ).toResponse()
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deleteAccommodationRatingById(@PathVariable id: Long) = accommodationRatingService.delete(id)
 }

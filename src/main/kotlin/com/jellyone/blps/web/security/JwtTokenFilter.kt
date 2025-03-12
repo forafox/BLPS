@@ -1,5 +1,7 @@
 package com.jellyone.blps.web.security
 
+import com.jellyone.blps.domain.enums.Role
+import com.jellyone.blps.web.security.principal.AuthenticationFacade
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.security.SignatureException
@@ -13,7 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 
 class JwtTokenFilter(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val authenticationFacade: AuthenticationFacade
 ) : GenericFilterBean() {
 
     private val allowedPaths = arrayOf("docs", "swagger", "h2", "auth")
@@ -47,6 +50,9 @@ class JwtTokenFilter(
                     authentication?.let {
                         SecurityContextHolder.getContext().authentication = it
                     }
+                }
+                if (jwtTokenProvider.getAuthorities(bearerToken).contains(Role.ADMIN.name)) {
+                    authenticationFacade.setAdminRole()
                 }
             } else {
                 val httpResponse = servletResponse as HttpServletResponse
