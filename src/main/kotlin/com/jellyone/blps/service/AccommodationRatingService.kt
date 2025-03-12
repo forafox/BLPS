@@ -33,9 +33,9 @@ class AccommodationRatingService(
         bookingId: Long,
         username: String
     ): AccommodationRating {
+        checkAbilityToRateAccommodation(accommodationId, username, bookingId)
         //TODO транзакция
         privateFeedbackService.create(feedback, date, bookingId, username)
-        checkAbilityToRateAccommodation(accommodationId, username, bookingId)
         val accommodationRating = AccommodationRating(
             id = 0,
             overallImpression = overallImpression,
