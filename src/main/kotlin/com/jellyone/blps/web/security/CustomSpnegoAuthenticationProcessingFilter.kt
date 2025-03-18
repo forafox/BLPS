@@ -31,7 +31,7 @@ class CustomSpnegoAuthenticationProcessingFilter(
 
         // Проверяем наличие заголовка Authorization с префиксом Negotiate
         val authHeader = request.getHeader("Authorization")
-        if (authHeader == null || !authHeader.startsWith("Negotiate ")) {
+        if (authHeader != null && !authHeader.startsWith("Negotiate ")) {
             logger.info("Request without Kerberos token. Passing it to the next filter.")
             chain.doFilter(request, response)
             return

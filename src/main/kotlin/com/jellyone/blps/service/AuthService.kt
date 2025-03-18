@@ -8,11 +8,12 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.AuthenticationManager
 
 @Service
 class AuthService @Autowired constructor(
-    private val authenticationManager: AuthenticationManager,
+    @Qualifier("jwtAuthenticationManager") private val authenticationManager: AuthenticationManager,
     private val userService: UserService,
     private val jwtTokenProvider: JwtTokenProvider
 ) {

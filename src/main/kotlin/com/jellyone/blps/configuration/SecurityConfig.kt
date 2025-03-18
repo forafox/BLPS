@@ -2,13 +2,17 @@ package com.jellyone.blps.configuration
 
 import com.jellyone.blps.web.security.*
 import com.jellyone.blps.web.security.principal.AuthenticationFacade
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Lazy
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.AuthenticationManagerResolver
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
@@ -60,12 +64,37 @@ class SecurityConfig(
             }
             .anonymous { it.disable() }
             .addFilterBefore(JwtTokenFilter(tokenProvider, authenticationFacade), UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterBefore(CustomSpnegoAuthenticationProcessingFilter(authenticationManager()), BasicAuthenticationFilter::class.java)
+            .addFilterBefore(CustomSpnegoAuthenticationProcessingFilter(kerberosAuthenticationManager()), BasicAuthenticationFilter::class.java)
         return http.build()
     }
 
+    /**
+     * Выбирает AuthenticationManager в зависимости от типа аутентификации (JWT / Kerberos)
+     */
     @Bean
-    fun authenticationManager(): AuthenticationManager {
+    fun authenticationManagerResolver(): AuthenticationManagerResolver<HttpServletRequest> {
+        return AuthenticationManagerResolver { request ->
+            if (request.getHeader(HttpHeaders.AUTHORIZATION)?.startsWith("Bearer ") == true) {
+                jwtAuthenticationManager()
+            } else {
+                kerberosAuthenticationManager()
+            }
+        }
+    }
+
+    /**
+     * Менеджер аутентификации для JWT
+     */
+    @Bean
+    fun jwtAuthenticationManager(): AuthenticationManager {
+        return authenticationConfiguration.authenticationManager
+    }
+
+    /**
+     * Менеджер аутентификации для Kerberos
+     */
+    @Bean
+    fun kerberosAuthenticationManager(): AuthenticationManager {
         return ProviderManager(
             listOf(
                 kerberosAuthenticationProvider(),
@@ -85,7 +114,7 @@ class SecurityConfig(
     }
 
     @Bean
-    fun spnegoAuthenticationProcessingFilter(authenticationManager: AuthenticationManager?): SpnegoAuthenticationProcessingFilter {
+    fun spnegoAuthenticationProcessingFilter(@Qualifier("kerberosAuthenticationManager") authenticationManager: AuthenticationManager?): SpnegoAuthenticationProcessingFilter {
         val filter = SpnegoAuthenticationProcessingFilter()
         filter.setAuthenticationManager(authenticationManager)
         return filter
