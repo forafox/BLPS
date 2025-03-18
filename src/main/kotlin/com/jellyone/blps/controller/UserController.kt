@@ -1,5 +1,6 @@
 package com.jellyone.blps.controller
 
+import com.jellyone.blps.domain.enums.Role
 import com.jellyone.blps.service.*
 import com.jellyone.blps.web.response.GetMeResponse
 import com.jellyone.blps.web.response.UserResponse
@@ -39,6 +40,7 @@ class UserController(
         ]
     )
     fun me(principal: Principal): GetMeResponse {
+        return GetMeResponse(0L, "test", Role.USER)
         val user = userService.getByUsername(principal.name)
         return GetMeResponse(user.id, principal.name, user.role)
     }
