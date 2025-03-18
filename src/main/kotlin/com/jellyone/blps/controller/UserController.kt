@@ -40,7 +40,6 @@ class UserController(
         ]
     )
     fun me(principal: Principal): GetMeResponse {
-        return GetMeResponse(0L, "test", Role.USER)
         val user = userService.getByUsername(principal.name)
         return GetMeResponse(user.id, principal.name, user.role)
     }
