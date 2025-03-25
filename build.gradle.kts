@@ -33,6 +33,20 @@ dependencies {
     implementation("org.springframework.security:spring-security-web")
     implementation("org.springframework.security:spring-security-config")
     implementation("org.springframework.security:spring-security-messaging")
+    implementation("org.springframework.boot:spring-boot-starter-quartz")
+
+    implementation("org.springframework.boot:spring-boot-starter-json")
+
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
+    implementation("com.rabbitmq.jms:rabbitmq-jms:3.4.0")
+    implementation("org.springframework:spring-jms")
+
+//    implementation("com.rabbitmq.jms:rabbitmq-jms:2.4.0")
+//    implementation("org.springframework.boot:spring-boot-starter-jms")
+//    implementation("org.springframework:spring-jms:3.3.4")
+//    implementation("com.rabbitmq.jms:rabbitmq-jms:2.4.0")
+//    implementation("jakarta.jms:jakarta.jms-api:3.1.0")
+
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("io.jsonwebtoken:jjwt-api:0.12.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")

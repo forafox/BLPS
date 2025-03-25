@@ -10,6 +10,20 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${DDL_MODE:none}
+  jms:
+    template:
+      delivery-mode: persistent
+    pub-sub-domain: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: NON_NULL
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
 security:
   jwt:
     secret: ${JWT_SECRET}
@@ -17,6 +31,6 @@ security:
     refresh: ${JWT_REFRESH_TTL}
 logging:
   level:
-    com.jellyone.blps: debug
-    org.springframework: debug
-    org.springframework.security: debug
+    com.jellyone.blps: info
+    org.springframework: info
+    org.springframework.security: info

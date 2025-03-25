@@ -4,12 +4,14 @@ import com.jellyone.blps.domain.Accommodation
 import com.jellyone.blps.domain.enums.Country
 import com.jellyone.blps.exception.ResourceNotFoundException
 import com.jellyone.blps.repository.AccommodationRepository
+import com.jellyone.blps.service.rabbitMQ.AccommodationEventPublisher
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 
 @Service
 class AccommodationService(
     private val accommodationRepository: AccommodationRepository,
+    private val eventPublisher: AccommodationEventPublisher,
     private val userService: UserService
 ) {
     fun create(
@@ -30,7 +32,10 @@ class AccommodationService(
             description = description,
             owner = user
         )
-        return accommodationRepository.save(accommodation)
+
+        val accommodationFromDB = accommodationRepository.save(accommodation)
+        eventPublisher.publishCreateEvent(accommodationFromDB)
+        return accommodationFromDB
     }
 
     fun getById(id: Long): Accommodation {
