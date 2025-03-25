@@ -1,8 +1,12 @@
+version: '3.8'
+
 networks:
   backend:
 
 volumes:
   db-data:
+    driver: local
+  kerberos-data:
     driver: local
 
 services:
@@ -17,12 +21,29 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
+  kerberos-server:
+    image: 'gcavalcante8808/krb5-server'
+    container_name: kerberos-server
+    ports:
+      - "88:88"  # KDC порт
+      - "749:749" # Административный порт
+    volumes:
+      - kerberos-data:/var/lib/krb5kdc
+    environment:
+      - KRB5_REALM=EXAMPLE.COM  # Указываем реалм
+      - KRB5_KDC=kerberos-server  # Указываем адре
+      - DOMAIN_REALM=example.com
+      - KDC_PASSWORD=master_password
+      - ADMIN_PASSWORD=adminpassword
+    networks:
+      - backend
   app:
     build:
       context: .
     env_file: .env
     depends_on:
       - postgres
+      - kerberos-server
     networks:
       - backend
     environment:
@@ -30,5 +51,8 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - KRB5_REALM=EXAMPLE.COM
+      - KRB5_KDC=kerberos-server
+      - KRB5_ADMIN_SERVER=kerberos-server
     ports:
       - '8080:8080'

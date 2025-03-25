@@ -41,7 +41,10 @@ class JwtTokenFilter(
             filterChain.doFilter(servletRequest, servletResponse)
             return
         }
-
+        if(SecurityContextHolder.getContext().authentication != null || bearerToken.startsWith("Negotiate ")) {
+            filterChain.doFilter(servletRequest, servletResponse)
+            return
+        }
         try {
             if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
                 bearerToken = bearerToken.substring(7)

@@ -40,6 +40,7 @@ dependencies {
 
     implementation("org.postgresql:postgresql:42.7.5")
     implementation("com.atomikos:transactions-spring-boot3-starter:6.0.0")
+    implementation("org.springframework.security.kerberos:spring-security-kerberos-web:2.1.1")
 
     implementation("org.projectlombok:lombok:1.18.28")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -47,6 +48,8 @@ dependencies {
     implementation("org.liquibase:liquibase-core")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
+
+    implementation("org.springframework.security.kerberos:spring-security-kerberos-client:1.0.1.RELEASE")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

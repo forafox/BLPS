@@ -1,5 +1,6 @@
 package com.jellyone.blps.controller
 
+import com.jellyone.blps.domain.enums.Role
 import com.jellyone.blps.service.*
 import com.jellyone.blps.web.response.GetMeResponse
 import com.jellyone.blps.web.response.UserResponse
