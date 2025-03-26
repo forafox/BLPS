@@ -1,0 +1,24 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  jms:
+    template:
+      delivery-mode: persistent
+    pub-sub-domain: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: NON_NULL
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+logging:
+  level:
+    com.jellyone.blps: info
+    org.springframework: info
+    org.springframework.security: info
+server:
+  port: 8081

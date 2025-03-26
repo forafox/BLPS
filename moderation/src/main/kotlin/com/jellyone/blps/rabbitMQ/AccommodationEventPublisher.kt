@@ -1,6 +1,5 @@
 package com.jellyone.blps.service.rabbitMQ
 
-import com.jellyone.blps.domain.Accommodation
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.core.MessagePostProcessor
 import org.springframework.stereotype.Service
@@ -9,10 +8,11 @@ import org.springframework.stereotype.Service
 class AccommodationEventPublisher(
     private val jmsTemplate: JmsTemplate
 ) {
-    fun publishCreateEvent(accommodation: Accommodation) {
+    fun publishCreateEvent(ratingMessage: String) {
+        print("try to send in moderation $ratingMessage")
         jmsTemplate.convertAndSend(
-            "accommodation.queue",
-            accommodation.description,
+            "feedback.queue",
+            ratingMessage,
             messagePostProcessor()
         )
     }
